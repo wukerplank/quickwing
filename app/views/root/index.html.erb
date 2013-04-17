@@ -1,0 +1,10 @@
+<%= form_tag("/search", :method => "get") do %>
+    <%= label_tag(:q, "Tell me your location:") %>
+    <%= text_field_tag(:q) %>
+    <%= submit_tag("Let the magic happen!") %>
+<% end %>
+
+<h2>Your Location:</h2>
+<p><%= @location %></p>
+
+<p>A Neuland Production!</p>

@@ -1,5 +1,6 @@
 Quickwing::Application.routes.draw do
-  root :to => 'welcome#index'
+  root :to => 'root#index'
+  match 'search' => 'root#search'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
