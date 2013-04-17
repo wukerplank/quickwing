@@ -6,6 +6,9 @@ gem 'rails', '3.2.11'
 gem 'bunny', '0.9.0.pre4'
 gem 'json'
 
+# Extern APIs
+gem 'foursquare2'
+
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 

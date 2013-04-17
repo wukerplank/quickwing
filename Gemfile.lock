@@ -43,6 +43,15 @@ GEM
     erubis (2.7.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
+    faraday (0.8.7)
+      multipart-post (~> 1.1)
+    faraday_middleware (0.9.0)
+      faraday (>= 0.7.4, < 0.9)
+    foursquare2 (1.9.6)
+      faraday (~> 0.8)
+      faraday_middleware (>= 0.8)
+      hashie (~> 1.0)
+    hashie (1.2.0)
     hike (1.2.2)
     i18n (0.6.4)
     journey (1.0.4)
@@ -56,6 +65,7 @@ GEM
       treetop (~> 1.4.8)
     mime-types (1.22)
     multi_json (1.7.2)
+    multipart-post (1.2.0)
     polyglot (0.3.3)
     rack (1.4.5)
     rack-cache (1.2)
@@ -109,6 +119,7 @@ PLATFORMS
 DEPENDENCIES
   bunny (= 0.9.0.pre4)
   coffee-rails (~> 3.2.1)
+  foursquare2
   jquery-rails
   json
   rails (= 3.2.11)
