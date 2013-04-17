@@ -8,6 +8,7 @@ gem 'json'
 
 # Extern APIs
 gem 'foursquare2'
+gem 'yelpster'
 
 # Figaro
 gem "figaro", "~> 0.6.3"
