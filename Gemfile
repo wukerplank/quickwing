@@ -9,6 +9,9 @@ gem 'json'
 # Extern APIs
 gem 'foursquare2'
 
+# Figaro
+gem "figaro", "~> 0.6.3"
+
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
