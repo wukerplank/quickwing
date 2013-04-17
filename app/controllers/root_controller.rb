@@ -23,13 +23,11 @@ class RootController < ApplicationController
   def get
     # Synchronously get a message from the queue
 
-    channel = bunny_client.create_channel
-    queue = channel.queue("messages")
-    exchange = channel.default_exchange
-
-    msg = exchange.queue.pop
+    msg = bunny_client.queue("messages").pop
     # Show the user what we got
-    flash[:got] = msg[:payload]
+    #delivery_info, metadata, payload = bunny_client.queue("messages").pop
+    logger.info(msg.inspect)
+    flash[:got] = msg[2]
     redirect_to root_path
   end
 
