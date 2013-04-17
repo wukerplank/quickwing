@@ -1,10 +1,19 @@
-<%= form_tag("/search", :method => "get") do %>
-    <%= label_tag(:q, "Tell me your location:") %>
-    <%= text_field_tag(:q) %>
+<%= form_tag({:controller => 'root', :action => 'publish'}, :method => "post") do %>
+    <%= label_tag(:message, "Tell me your location:") %>
+    <%= text_field_tag(:message) %>
     <%= submit_tag("Let the magic happen!") %>
 <% end %>
 
-<h2>Your Location:</h2>
-<p><%= @location %></p>
+<% if flash[:published] %>
+    <p>Published your Location request!</p>
+<% end %>
+
+<%= form_tag({:controller => 'root', :action => 'get'}, :method => 'post') do %>
+    <%= submit_tag("Get my Location back") %>
+<% end %>
+
+<% if flash[:got] %>
+    <p>Got your Location: <%= h(flash[:got]) %></p>
+<% end %>
 
 <p>A Neuland Production!</p>
