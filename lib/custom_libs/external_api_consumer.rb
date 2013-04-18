@@ -8,7 +8,7 @@ class ExternalApiConsumer
     @channel  = @client.create_channel
     @exchange = @channel.fanout(ENV['SEARCH_JOB_EXCHANGE_NAME'])
     
-    queue = @channel.queue(@queue_name).bind(@exchange).subscribe do |delivery_info, metadata, payload|
+    queue = @channel.queue(@queue_name, :auto_delete=>true).bind(@exchange).subscribe do |delivery_info, metadata, payload|
       json = JSON.parse(payload)
       
       puts "received: #{json.inspect}"
