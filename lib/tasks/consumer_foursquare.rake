@@ -2,7 +2,7 @@ namespace :consumer do
   desc "Foursuqare Consumer"
   task :foursquare => :environment do
 
-    ExternalApiConsumer.new('foursquare') do |payload|
+    ExternalApiConsumer.new('foursquare') do |payload, eac|
       payload['limit'] ||= 10
 
       # Instantiate client
@@ -25,7 +25,9 @@ namespace :consumer do
         )
       end
 
-      print results.inspect
+      results_json = results.to_json
+
+      eac.send_result(payload['user_uuid'], results_json)
     end
   end
 end
