@@ -1,19 +1,21 @@
 <%= form_tag({:controller => 'root', :action => 'publish'}, :method => "post") do %>
-    <%= label_tag(:message, "Tell me your location:") %>
-    <%= text_field_tag(:message) %>
+    <%= label_tag(:term, "What are you searching for?:") %>
+    <%= text_field_tag(:term, nil, :placeholder => "e.g. coffee") %>
+    <br/>
+    <%= label_tag(:location, "Tell me your location!") %>
+    <%= text_field_tag(:location, nil, :placeholder => "e.g. Salzburg") %>
+    <br/>
+    <%= label_tag(:latitude, "Whats your latitude?") %>
+    <%= text_field_tag(:latitude, nil, :placeholder => "e.g. 47.799917") %>
+    <br/>
+    <%= label_tag(:longitude, "Whats your longitude?") %>
+    <%= text_field_tag(:longitude, nil, :placeholder => "e.g. 13.041849") %>
+    <br/>
     <%= submit_tag("Let the magic happen!") %>
 <% end %>
 
 <% if flash[:published] %>
     <p>Published your Location request!</p>
-<% end %>
-
-<%= form_tag({:controller => 'root', :action => 'get'}, :method => 'post') do %>
-    <%= submit_tag("Get my Location back") %>
-<% end %>
-
-<% if flash[:got] %>
-    <p>Got your Location: <%= h(flash[:got]) %></p>
 <% end %>
 
 <p>A Neuland Production!</p>
