@@ -13,7 +13,7 @@ class ExternalApiConsumer
       
       puts "received: #{json.inspect}"
       
-      yield json
+      yield json, self
     end
 
     loop do
@@ -21,5 +21,13 @@ class ExternalApiConsumer
     end
   
     @client.close
+  end
+
+  def send_result(queue_name, results)
+      @results_exchange = @channel.direct(ENV['SEARCH_RESULTS_EXCHANGE_NAME'])
+
+      @results_queue = @channel.queue(queue_name).bind(@exchange)
+
+      @results_queue.publish(results)
   end
 end
