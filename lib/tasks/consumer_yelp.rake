@@ -11,18 +11,22 @@ namespace :consumer do
     }
     
     ExternalApiConsumer.new('yelp') do |payload|
+      payload['limit'] ||= 10
+      
       client = Yelp::Client.new
       
       if payload['message_type']=='location'
         request = Yelp::V2::Search::Request::Location.new({
-          :term => payload['term'], 
-          :city => payload['location']}.merge(api_credentials)
+          :term  => payload['term'], 
+          :city  => payload['location'],
+          :limit => payload['limit']}.merge(api_credentials)
         )
-      elsif payload['message_type']=='location'
+      elsif payload['message_type']=='coordinates'
         request = Yelp::V2::Search::Request::GeoPoint.new({
           :term      => payload['term'], 
           :latitude  => payload['lat'], 
-          :longitude => payload['lng']}.merge(api_credentials)
+          :longitude => payload['lng'],
+          :limit     => payload['limit']}.merge(api_credentials)
         )
       end
       
