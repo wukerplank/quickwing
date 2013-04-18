@@ -11,9 +11,6 @@ namespace :consumer do
     }
     
     ExternalApiConsumer.new('yelp') do |payload|
-      
-      puts payload.inspect
-      
       client = Yelp::Client.new
       
       if payload['message_type']=='location'
