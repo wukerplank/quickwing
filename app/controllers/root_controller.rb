@@ -9,39 +9,49 @@ class RootController < ApplicationController
     # queue, via the nameless exchange.  The name of the queue to
     # publish to is specified in the routing key.
 
-    channel = bunny_client.create_channel
-    queue = channel.queue("messages")
-    exchange = channel.default_exchange
-    exchange.publish params[:message],
-                     :routing_key => queue.name
+    channel = client.create_channel
+    exchange = channel.fanout("#{ENV['SEARCH_JOB_EXCHANGE_NAME']}")
+    four = channel.queue("foursquare", :auto_delete => true).bind(exchange)
+    yelp = channel.queue("yelp", :auto_delete => true).bind(exchange)
+
+    # we need to make something non durable!
+
+    if(params[:location].present?)
+      message_type = "location"
+    else
+      message_type = "coordinates"
+    end
+
+    exchange.publish({
+                         :message_type => message_type,
+                         :term => params[:term],
+                         :location => params[:location],
+                         :lat => params[:latitude],
+                         :lng => params[:longitude],
+                         :limit => 20,
+                     }.to_json)
 
     # Notify the user that we published.
     flash[:published] = true
     redirect_to root_path
   end
 
-  def get
-    # Synchronously get a message from the queue
-
-    msg = bunny_client.queue("messages").pop
-    # Show the user what we got
-    #delivery_info, metadata, payload = bunny_client.queue("messages").pop
-    logger.info(msg.inspect)
-    flash[:got] = msg[2]
-    redirect_to root_path
-  end
-
   private
-  def rabbit_url
+  def amqp_url
     "amqp://#{ENV['RABBIT_MQ_USER']}:#{ENV['RABBIT_MQ_PASSWORD']}@#{ENV['RABBIT_MQ_HOST']}:#{ENV['RABBIT_MQ_PORT']}"
   end
 
-  def bunny_client
-    @client ||= begin
-      c = Bunny.new(rabbit_url)
+  def client
+    unless @client
+      c = Bunny.new(amqp_url)
       c.start
-      c
+      @client = c
     end
+    @client
+  end
+
+  def exchange
+    @exchange ||= client.exchange("#{ENV['SEARCH_JOB_EXCHANGE_NAME']}")
   end
 
 end

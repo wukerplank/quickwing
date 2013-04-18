@@ -3,7 +3,6 @@ Quickwing::Application.routes.draw do
   get 'search' => 'root#search'
 
   match 'publish' => 'root#publish'
-  match 'get' => 'root#get'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
