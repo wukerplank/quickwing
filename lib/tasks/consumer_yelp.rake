@@ -10,7 +10,7 @@ namespace :consumer do
       :token_secret    => ENV['YELP_TOKEN_SECRET']
     }
     
-    ExternalApiConsumer.new('yelp') do |payload|
+    ExternalApiConsumer.new('yelp') do |payload, eac|
       payload['limit'] ||= 10
       
       client = Yelp::Client.new
@@ -33,7 +33,7 @@ namespace :consumer do
       if request
         results = client.search(request)
         
-        puts results.inspect
+        eac.send_result(payload['user_uuid'], [].to_json)
       end
     end
   end
