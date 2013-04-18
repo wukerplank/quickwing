@@ -11,8 +11,8 @@ class RootController < ApplicationController
 
     channel = client.create_channel
     exchange = channel.fanout("#{ENV['SEARCH_JOB_EXCHANGE_NAME']}")
-    four = channel.queue("foursquare", :auto_delete => true).bind(exchange)
-    yelp = channel.queue("yelp", :auto_delete => true).bind(exchange)
+    channel.queue("foursquare", :auto_delete => true).bind(exchange)
+    channel.queue("yelp", :auto_delete => true).bind(exchange)
 
     # we need to make something non durable!
 
@@ -23,13 +23,16 @@ class RootController < ApplicationController
     end
 
     exchange.publish({
-                         :message_type => message_type,
-                         :term => params[:term],
-                         :location => params[:location],
-                         :lat => params[:latitude],
-                         :lng => params[:longitude],
-                         :limit => 20,
-                     }.to_json)
+       :message_type => message_type,
+       :term => params[:term],
+       :location => params[:location],
+       :lat => params[:latitude],
+       :lng => params[:longitude],
+       :limit => 20,
+       :user_uuid => session[:user_uuid],
+    }.to_json)
+
+    client.close
 
     # Notify the user that we published.
     flash[:published] = true
