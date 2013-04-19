@@ -18,6 +18,7 @@ class ExternalApiConsumer
 
     loop do
       # wait until this process gets killed
+      sleep 5.0
     end
   
     @client.close
