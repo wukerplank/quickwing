@@ -24,15 +24,15 @@ class RootController < ApplicationController
 
     exchange.publish({
        :message_type => message_type,
-       :term => params[:term],
-       :location => params[:location],
-       :lat => params[:latitude],
-       :lng => params[:longitude],
+       :term => params[:term].strip,
+       :location => params[:location].strip,
+       :lat => params[:latitude].strip,
+       :lng => params[:longitude].strip,
        :limit => 20,
        :user_uuid => session[:user_uuid],
     }.to_json)
 
-    client.close
+    #client.close
 
     # Notify the user that we published.
     flash[:published] = true

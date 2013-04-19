@@ -10,8 +10,23 @@
 
 <%= yield %>
 
+<div id="results"></div>
+
 <script type="text/javascript">
   var user_uuid = "<%= user_uuid %>";
+</script>
+
+<script src=http://localhost:5000/socket.io/socket.io.js"></script>
+<script>
+    var socket = io.connect('http://localhost:5000/');
+    socket.on('connect', function (data) {
+        socket.emit('uuid', user_uuid);
+    });
+
+    socket.on('results', function (data) {
+        console.log(data);
+        $("#results").append("<pre>" + data + "</pre>");
+    });
 </script>
 
 </body>

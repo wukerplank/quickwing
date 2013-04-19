@@ -1,0 +1,8 @@
+{
+  "name": "backchannel",
+  "version": "0.0.1",
+  "dependencies": {
+    "socket.io": "0.8.7",
+    "amqp": "~0.1.6"
+  }
+}

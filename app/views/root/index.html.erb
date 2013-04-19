@@ -1,4 +1,6 @@
-<%= form_tag({:controller => 'root', :action => 'publish'}, :method => "post") do %>
+
+
+<%= form_tag({:controller => 'root', :action => 'publish'}, :method => "post", :remote => true) do %>
     <%= label_tag(:term, "What are you searching for?:") %>
     <%= text_field_tag(:term, nil, :placeholder => "e.g. coffee") %>
     <br/>
