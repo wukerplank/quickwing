@@ -5,14 +5,10 @@ class RootController < ApplicationController
 
   # The action for our publish form.
   def publish
-    # Send the message from the form's input box to the "messages"
-    # queue, via the nameless exchange.  The name of the queue to
-    # publish to is specified in the routing key.
-
     channel = client.create_channel
-    exchange = channel.fanout("#{ENV['SEARCH_JOB_EXCHANGE_NAME']}")
-    channel.queue("foursquare", :auto_delete => true).bind(exchange)
-    channel.queue("yelp", :auto_delete => true).bind(exchange)
+    exchange = channel.fanout("#{ENV['SEARCH_JOB_EXCHANGE_NAME']}", :durable => true)
+    channel.queue("foursquare", :auto_delete => true, :durable => false).bind(exchange)
+    channel.queue("yelp", :auto_delete => true, :durable => false).bind(exchange)
 
     # we need to make something non durable!
 
@@ -30,9 +26,9 @@ class RootController < ApplicationController
        :lng => params[:longitude].strip,
        :limit => 20,
        :user_uuid => session[:user_uuid],
-    }.to_json)
+    }.to_json, :persistent => false)
 
-    #client.close
+    client.close
 
     # Notify the user that we published.
     flash[:published] = true
