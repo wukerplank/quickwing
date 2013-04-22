@@ -15,6 +15,9 @@
 
 # Ignore all logfiles and tempfiles.
 /log/*.log
+
+/node_socket/node_modules/*
+
 /tmp
 
 # Ignore application configuration
