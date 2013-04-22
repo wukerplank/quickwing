@@ -33,7 +33,36 @@ namespace :consumer do
       if request
         results = client.search(request)
         
-        eac.send_result(payload['user_uuid'], [].to_json)
+        puts results.inspect
+        
+        final_results = {
+          'source_name' => 'yelp',
+          'businesses'  => []
+        }
+        
+        results['businesses'].each do |result|
+          final_result = {
+            'name'        => result['name'],
+            'description' => (result['snippet_text'] || ''),
+            'source_url'  => result['url'],
+            'rating'      => result['rating']
+          }
+          if result['location'].present?
+            final_result = final_result.merge({
+              'street' => result['location']['display_address'][0],
+              'zip'    => result['location']['postal_code'],
+              'city'   => result['location']['city'],
+              'lat'    => result['location']['coordinate']['latitude'],
+              'lng'    => result['location']['coordinate']['longitude']
+            })
+          else
+            final_result = final_result.merge({'street'=>'', 'zip'=>'', 'lat'=>'', 'lng'=>''})
+          end
+          
+          final_results['businesses'] << final_result
+        end
+        
+        eac.send_result(payload['user_uuid'], final_results.to_json)
       end
     end
   end
