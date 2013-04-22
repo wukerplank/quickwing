@@ -33,8 +33,6 @@ namespace :consumer do
       if request
         results = client.search(request)
         
-        puts results.inspect
-        
         final_results = {
           'source_name' => 'yelp',
           'businesses'  => []
