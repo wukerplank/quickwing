@@ -54,7 +54,7 @@ namespace :consumer do
               'lng'    => result['location']['coordinate']['longitude']
             })
           else
-            final_result = final_result.merge({'street'=>'', 'zip'=>'', 'lat'=>'', 'lng'=>''})
+            final_result = final_result.merge({'street'=>'', 'zip'=>'', 'city'=>'', 'lat'=>'', 'lng'=>''})
           end
           
           final_results['businesses'] << final_result

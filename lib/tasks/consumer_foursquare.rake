@@ -1,4 +1,5 @@
 namespace :consumer do
+  
   desc "Foursuqare Consumer"
   task :foursquare => :environment do
 
@@ -25,9 +26,36 @@ namespace :consumer do
         )
       end
 
-      results_json = results.to_json
+      if results
+        final_results = {
+          'source_name' => 'foursquare',
+          'businesses' => []
+        }
 
-      eac.send_result(payload['user_uuid'], results_json)
+        results.groups[0].items.each do |result|
+          businesses = {
+            'name'        => result.name,
+            'description' => nil,
+            'source_url'  => result.canonicalUrl,
+            'rating'      => nil
+          }
+          if result.location.present?
+            businesses = businesses.merge({
+              'street' => result.location.address,
+              'zip'    => result.location.postal_code,
+              'city'   => result.location.city,
+              'lat'    => result.location.lat,
+              'lng'    => result.location.lng
+            })
+          else
+            businesses = businesses.merge({'street'=>'', 'zip'=>'', 'city'=>'', 'lat'=>'', 'lng'=>''})
+          end
+            
+          final_results['businesses'] << businesses
+        end
+
+        eac.send_result(payload['user_uuid'], final_results.to_json)
+      end
     end
   end
 end
