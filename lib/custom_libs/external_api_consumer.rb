@@ -6,7 +6,7 @@ class ExternalApiConsumer
     @client.start
 
     @channel  = @client.create_channel
-    @exchange = @channel.fanout(ENV['SEARCH_JOB_EXCHANGE_NAME'])
+    @exchange = @channel.fanout(ENV['SEARCH_JOB_EXCHANGE_NAME'], :durable=>true)
     
     queue = @channel.queue(@queue_name, :auto_delete=>true).bind(@exchange).subscribe do |delivery_info, metadata, payload|
       json = JSON.parse(payload)
