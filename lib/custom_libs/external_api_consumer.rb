@@ -27,7 +27,7 @@ class ExternalApiConsumer
   def send_result(queue_name, results)
       @results_exchange = @channel.direct(ENV['SEARCH_RESULTS_EXCHANGE_NAME'])
 
-      @results_queue = @channel.queue(queue_name, :auto_delete=>true).bind(@exchange)
+      @results_queue = @channel.queue(queue_name, :auto_delete=>true, :durable=>true).bind(@results_exchange)
 
       @results_queue.publish(results)
   end

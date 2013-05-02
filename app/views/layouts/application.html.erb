@@ -12,12 +12,22 @@
 
 <div id="results"></div>
 
+<script id="entry-template" type="text/x-handlebars-template">
+  {{#each businesses}}
+  <li>{{this.name}} (<a href="{{this.source_url}}">{{this.source}}</a>)</li>
+  {{/each}}
+</script>
+
 <script type="text/javascript">
   var user_uuid = "<%= user_uuid %>";
 </script>
 
 <script src=http://localhost:5000/socket.io/socket.io.js"></script>
 <script>
+    var results = { businesses: [] };
+    var source   = $("#entry-template").html();
+    var template = Handlebars.compile(source);
+
     var socket = io.connect('http://localhost:5000/');
     socket.on('connect', function (data) {
         socket.emit('uuid', user_uuid);
@@ -25,7 +35,25 @@
 
     socket.on('results', function (data) {
         console.log(data);
-        $("#results").append("<pre>" + data + "</pre>");
+
+        data["businesses"] = $.map(data["businesses"], function(element) {
+            element["source"] = data["source_name"];
+            return element;
+        });
+
+        results["businesses"] = results["businesses"].concat(data["businesses"]);
+        results["businesses"] = results["businesses"].sort(function(a,b) {
+             var nameA=a.name.toLowerCase(), nameB=b.name.toLowerCase()
+             if (nameA < nameB) //sort string ascending
+              return -1
+             if (nameA > nameB)
+              return 1
+             return 0 //default return value (no sorting)
+        });
+
+        var html    = template(results);
+
+        $("#results").html(html);
     });
 </script>
 
