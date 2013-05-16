@@ -12,8 +12,17 @@ class ExternalApiConsumer
       json = JSON.parse(payload)
       
       puts "received: #{json.inspect}"
-      
+
+      start = Time.now.to_f
+
+      sleep 1.199
+
       yield json, self
+
+      duration = Time.now.to_f - start
+
+      puts "Duration = #{duration}"
+
     end
 
     loop do

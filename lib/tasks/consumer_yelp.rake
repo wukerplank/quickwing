@@ -12,7 +12,7 @@ namespace :consumer do
     
     ExternalApiConsumer.new('yelp') do |payload, eac|
       payload['limit'] ||= 10
-      
+=begin
       client = Yelp::Client.new
       
       if payload['message_type']=='location'
@@ -29,10 +29,11 @@ namespace :consumer do
           :limit     => payload['limit']}.merge(api_credentials)
         )
       end
-      
+
       if request
+
         results = client.search(request)
-        
+
         final_results = {
           'source_name' => 'yelp',
           'businesses'  => []
@@ -59,9 +60,18 @@ namespace :consumer do
           
           final_results['businesses'] << final_result
         end
-        
-        eac.send_result(payload['user_uuid'], final_results.to_json)
+
+      File.open('lib/tasks/yelp.json', 'w') do |f|
+          f.write(final_results.to_json)
+        end
+=end
+      File.open("lib/tasks/yelp.json") do |f|
+        @final_results = f.read
       end
+
+      # eac.send_result(payload['user_uuid'], final_results.to_json)
+      eac.send_result(payload['user_uuid'], @final_results)
+      # end
     end
   end
   
