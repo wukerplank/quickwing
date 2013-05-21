@@ -1,7 +1,7 @@
 Quickwing
 =========
 
-Quickwing is a sister project of [Slowwing](https://github.com/wukerplank/quickwing). This is the "sophisticated" implementation of Quickwing. It decouples the user request from the API requests (by using RabbitMQ and node.js) to make the user experience snappier. The API requests will be done by two consumers (one for Foursquare, one for Yelp!). After they get results they normalize them and push them back into RabbitMQ. The node.js app will get them and push them to the user's browser via socket.io.
+Quickwing is a sister project of [Slowwing](https://github.com/wukerplank/quickwing). This is the "sophisticated" implementation of Quickwing. It decouples the user request from the API requests (by using RabbitMQ and node.js) to make the user experience snappier. The API requests will be done by two consumers (one for Foursquare, one for Yelp!). After they get results they normalize them and push them back into RabbitMQ. The node.js app will get them and push those results to the user's browser via socket.io.
 
 Installation
 ------------
