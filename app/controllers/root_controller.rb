@@ -28,7 +28,9 @@ class RootController < ApplicationController
        :user_uuid => session[:user_uuid],
     }.to_json, :persistent => false)
 
-    client.close
+    #sleep 5.0
+    channel.close
+    client.stop
 
     # Notify the user that we published.
     flash[:published] = true
@@ -47,10 +49,6 @@ class RootController < ApplicationController
       @client = c
     end
     @client
-  end
-
-  def exchange
-    @exchange ||= client.exchange("#{ENV['SEARCH_JOB_EXCHANGE_NAME']}")
   end
 
 end

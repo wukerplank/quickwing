@@ -5,7 +5,7 @@ namespace :consumer do
 
     ExternalApiConsumer.new('foursquare') do |payload, eac|
       payload['limit'] ||= 10
-
+=begin
       # Instantiate client
       client = Foursquare2::Client.new(
         :client_id => ENV['FOURSQUARE_CLIENT_ID'],
@@ -26,7 +26,9 @@ namespace :consumer do
         )
       end
 
+
       if results
+
         final_results = {
           'source_name' => 'foursquare',
           'businesses' => []
@@ -54,8 +56,18 @@ namespace :consumer do
           final_results['businesses'] << businesses
         end
 
-        eac.send_result(payload['user_uuid'], final_results.to_json)
-      end
+        File.open('lib/tasks/foursquare.json', 'w') do |f|
+          f.write(final_results.to_json)
+        end
+=end
+
+        File.open("lib/tasks/foursquare.json") do |f|
+          @final_results = f.read
+        end
+
+        # eac.send_result(payload['user_uuid'], final_results.to_json)
+        eac.send_result(payload['user_uuid'], @final_results)
+      # end
     end
   end
 end

@@ -12,8 +12,17 @@ class ExternalApiConsumer
       json = JSON.parse(payload)
       
       puts "received: #{json.inspect}"
-      
+
+      start = Time.now.to_f
+
+      sleep 1.199
+
       yield json, self
+
+      duration = Time.now.to_f - start
+
+      puts "Duration = #{duration}"
+
     end
 
     loop do
@@ -27,7 +36,7 @@ class ExternalApiConsumer
   def send_result(queue_name, results)
       @results_exchange = @channel.direct(ENV['SEARCH_RESULTS_EXCHANGE_NAME'])
 
-      @results_queue = @channel.queue(queue_name, :auto_delete=>true).bind(@exchange)
+      @results_queue = @channel.queue(queue_name, :auto_delete=>true, :durable=>true).bind(@results_exchange)
 
       @results_queue.publish(results)
   end

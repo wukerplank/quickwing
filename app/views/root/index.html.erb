@@ -13,7 +13,7 @@
     <%= label_tag(:longitude, "Whats your longitude?") %>
     <%= text_field_tag(:longitude, nil, :placeholder => "e.g. 13.041849") %>
     <br/>
-    <%= submit_tag("Let the magic happen!") %>
+    <%= submit_tag("Let the magic happen!", :disable_with => "Plese Wait!") %>
 <% end %>
 
 <% if flash[:published] %>
