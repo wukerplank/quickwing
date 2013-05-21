@@ -1,6 +1,4 @@
-
-
-<%= form_tag({:controller => 'root', :action => 'publish'}, :method => "post", :remote => true) do %>
+<%= form_tag({:controller => 'root', :action => 'publish'}, :method => "post", :remote => true, :id => 'search_form') do %>
     <%= label_tag(:term, "What are you searching for?:") %>
     <%= text_field_tag(:term, nil, :placeholder => "e.g. coffee") %>
     <br/>
@@ -21,3 +19,9 @@
 <% end %>
 
 <p>A Neuland Production!</p>
+
+<script type="text/javascript" charset="utf-8">
+	$('#search_form').submit(function(){
+		$('#results').html('')
+	})
+</script>
